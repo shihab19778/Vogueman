@@ -1,0 +1,97 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A men's apparel product",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Product name" },
+        "description": { "type": "string", "description": "Product description" },
+        "price": { "type": "number", "description": "Product price" },
+        "category": { "type": "string", "enum": ["T-Shirt", "Panjabi", "Polo Shirt", "Pants", "Trousers"], "description": "Main category" },
+        "subCategory": { "type": "string", "description": "Sub-category (e.g., Half Sleeve, Full Sleeve)" },
+        "images": { "type": "array", "items": { "type": "string" }, "description": "Array of image URLs" },
+        "sizes": { "type": "array", "items": { "type": "string" }, "description": "Available sizes (S, M, L, XL, XXL)" },
+        "stock": { "type": "number", "description": "Stock quantity" },
+        "trending": { "type": "boolean", "description": "Whether the product is trending" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["name", "price", "category", "images", "sizes"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A customer order",
+      "type": "object",
+      "properties": {
+        "customerName": { "type": "string", "description": "Customer's full name" },
+        "phone": { "type": "string", "description": "Customer's phone number" },
+        "address": { "type": "string", "description": "Full delivery address" },
+        "items": { 
+          "type": "array", 
+          "items": { 
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "name": { "type": "string" },
+              "size": { "type": "string" },
+              "quantity": { "type": "number" },
+              "price": { "type": "number" }
+            }
+          }
+        },
+        "totalAmount": { "type": "number", "description": "Total order amount" },
+        "discountAmount": { "type": "number", "description": "Discount applied" },
+        "finalAmount": { "type": "number", "description": "Final amount to pay" },
+        "status": { "type": "string", "enum": ["Pending", "Shipped", "Delivered", "Cancelled"], "description": "Order status" },
+        "paymentMethod": { "type": "string", "description": "Payment method (COD)" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Order timestamp" }
+      },
+      "required": ["customerName", "phone", "address", "items", "totalAmount", "status"]
+    },
+    "Coupon": {
+      "title": "Coupon",
+      "description": "A discount coupon",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string", "description": "Coupon code" },
+        "type": { "type": "string", "enum": ["percentage", "flat"], "description": "Discount type" },
+        "value": { "type": "number", "description": "Discount value" },
+        "expiryDate": { "type": "string", "format": "date-time", "description": "Expiry date" },
+        "active": { "type": "boolean", "description": "Whether the coupon is active" }
+      },
+      "required": ["code", "type", "value", "active"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "A product review",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "description": "ID of the product being reviewed" },
+        "userId": { "type": "string", "description": "ID of the user who left the review" },
+        "userName": { "type": "string", "description": "Name of the user who left the review" },
+        "rating": { "type": "number", "description": "Rating from 1 to 5" },
+        "comment": { "type": "string", "description": "Review comment" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Review timestamp" }
+      },
+      "required": ["productId", "userId", "userName", "rating", "comment", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/products": {
+      "schema": "Product",
+      "description": "Collection of products"
+    },
+    "/orders": {
+      "schema": "Order",
+      "description": "Collection of customer orders"
+    },
+    "/coupons": {
+      "schema": "Coupon",
+      "description": "Collection of discount coupons"
+    },
+    "/reviews": {
+      "schema": "Review",
+      "description": "Collection of product reviews"
+    }
+  }
+}
